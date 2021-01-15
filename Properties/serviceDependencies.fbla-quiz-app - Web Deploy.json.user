@@ -1,0 +1,13 @@
+{
+  "dependencies": {},
+  "parameters": {
+    "resourceGroup": {
+      "Type": "resourceGroup",
+      "Value": "fbla-app-rg-01"
+    },
+    "subscriptionId": {
+      "Type": "subscription",
+      "Value": "d756e63d-1ce6-4ea9-afb6-8f5329c0baec"
+    }
+  }
+}

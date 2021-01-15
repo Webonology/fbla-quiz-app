@@ -1,0 +1,39 @@
+﻿@model fbla_app_ui.ViewModels.UserSummaryViewModel
+
+@{
+    ViewBag.Title = "FBLA Quiz by Maddux Leonardo";
+}
+
+
+
+    <div class="container">
+        <h3>@Model.Name here are your result</h3>
+        <h4>You got @Model.NumberOfCorrect of @Model.NumberOfQuestions correct.</h4>
+        @for (int i = 0; i < Model.QuestionsAndAnswers.Count(); i++)
+        {
+            <div class="col-md-12">
+                @if (Model.QuestionsAndAnswers[i].Correct == true)
+                {
+                <img src="~/images/clipart624281.png" class="img-responsive" width="20px" />
+                }
+                else
+                {
+                <img src="~/images/Red-incorrect-icon.png" class="img-responsive" width="20px" />
+                }
+                <strong>Question:</strong> @Model.QuestionsAndAnswers[i].Question
+            </div>
+            <div class="col-md-12">
+                <strong>You answered:</strong> @Model.QuestionsAndAnswers[i].UserAnswer
+            </div>
+            if (Model.QuestionsAndAnswers[i].Correct == false)
+            {
+                <div class="col-md-12">
+                    <strong>Sorry the correct answer was:</strong> @Model.QuestionsAndAnswers[i].CorrectAnswer
+                </div>
+            }
+            <div class="col-md-12">
+                <strong>Fun facts about this question:</strong> @Model.QuestionsAndAnswers[i].WhyCorrect
+            </div>
+        }
+
+    </div>

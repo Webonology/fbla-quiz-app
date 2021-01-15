@@ -1,0 +1,79 @@
+﻿@model fbla_app_ui.ViewModels.UserQuizViewModel
+
+@{
+    ViewBag.Title = "FBLA Quiz by Maddux Leonardo";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h3>@Model.Quiz.Name</h3>
+        <h4>Here are @Model.Quiz.AmountOfQuestions questions to test your FBLA knowledge.</h4>
+        @Html.HiddenFor(m => m.TrackingID)
+        @Html.HiddenFor(m => m.Quiz.Name)
+        @Html.HiddenFor(m => m.Quiz.AmountOfQuestions)
+        @Html.HiddenFor(m => m.Quiz.ID)
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.TrackingID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @for (int i = 0; i < Model.QuizQuestionAndAnswer.Count(); i++)
+        {
+            <div class="form-group">
+                <div class="col-md-12">
+                    @Html.HiddenFor(m => m.QuizQuestionAndAnswer[i].QuestionID)
+                    @Html.HiddenFor(m => m.QuizQuestionAndAnswer[i].Question)
+                    @Html.HiddenFor(m => m.QuizQuestionAndAnswer[i].AnswerType)
+                    <strong>@Model.QuizQuestionAndAnswer[i].Question</strong>
+                </div>
+
+                @for (int y = 0; y < Model.QuizQuestionAndAnswer[i].Answers.Count(); y++)
+                {
+                    @Html.HiddenFor(m => m.QuizQuestionAndAnswer[i].Answers[y].ID)
+                    @Html.HiddenFor(m => m.QuizQuestionAndAnswer[i].Answers[y].Answer)
+                    <div class="col-md-12">
+                        @if (Model.QuizQuestionAndAnswer[i].AnswerType.ToUpper() == "TX")
+                        {
+                            @Html.EditorFor(model => Model.QuizQuestionAndAnswer[i].UserAnswer, new { htmlAttributes = new { @class = "form-control" } })
+                        }
+                        @if (Model.QuizQuestionAndAnswer[i].AnswerType.ToUpper() == "RB")
+                        {
+                            @Html.RadioButtonFor(model => Model.QuizQuestionAndAnswer[i].UserAnswer, Model.QuizQuestionAndAnswer[i].Answers[y].ID) @Model.QuizQuestionAndAnswer[i].Answers[y].Answer<br />
+                        }
+
+                    </div>
+                }
+
+                @if (Model.QuizQuestionAndAnswer[i].AnswerType.ToUpper() == "DD")
+                {
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => Model.QuizQuestionAndAnswer[i].UserAnswer, new SelectList(Model.QuizQuestionAndAnswer[i].Answers, "ID", "Answer"))
+                    </div>
+                }
+                @Html.ValidationMessageFor(model => Model.QuizQuestionAndAnswer[i].UserAnswer, "", new { @class = "text-danger" })
+            </div>
+        }
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
